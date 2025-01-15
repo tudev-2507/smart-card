@@ -84,19 +84,19 @@
         }
 
         .facebook {
-            background-color: #3b5998;
+            background-color: #477ae8;
         }
 
         .facebook:hover {
-            background-color: #2d4373;
+            background-color: #00ccff;
         }
 
         .youtube {
-            background-color: #ff0000;
+            background-color: #b50f54;
         }
 
         .youtube:hover {
-            background-color: #cc0000;
+            background-color: #22b66c;
         }
 
         .instagram {
@@ -112,7 +112,7 @@
         }
 
         .github:hover {
-            background-color: #24292e;
+            background-color: #9f15db;
         }
     </style>
 </head>
@@ -136,7 +136,7 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
             Instagram
         </a>
-        <a href="https://github.com/tudev-2507/tudev-2507.github.io" class="github" target="_blank">
+        <a href="https://github.com/tudev-2507" class="github" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub Logo">
             GitHub
         </a>
@@ -153,33 +153,38 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        function drawDarkFlower(x, y, petals, radius, color) {
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.fillStyle = color;
-            for (let i = 0; i < petals; i++) {
+        function drawSwirl(x, y, maxRadius, color) {
+            const steps = 50;
+            const angleStep = (Math.PI * 2) / steps;
+            for (let i = 0; i < steps; i++) {
+                const radius = (i / steps) * maxRadius;
+                const angle = i * angleStep;
+                const alpha = 1 - i / steps;
                 ctx.beginPath();
-                ctx.rotate((Math.PI * 2) / petals);
-                ctx.moveTo(0, 0);
-                ctx.arc(0, radius, radius / 2, 0, Math.PI * 2);
+                ctx.arc(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
                 ctx.fill();
             }
-            ctx.restore();
         }
 
-        function drawBackground() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < 50; i++) {
+        function drawStarryNight() {
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < 100; i++) {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
-                const petals = Math.floor(Math.random() * 5) + 5;
-                const radius = Math.random() * 20 + 10;
-                const color = `rgba(${Math.random() * 255}, ${Math.random() * 50}, ${Math.random() * 50}, 0.8)`;
-                drawDarkFlower(x, y, petals, radius, color);
+                const maxRadius = Math.random() * 50 + 30;
+                const color = {
+                    r: Math.floor(Math.random() * 200 + 55),
+                    g: Math.floor(Math.random() * 200 + 55),
+                    b: Math.floor(Math.random() * 255)
+                };
+                drawSwirl(x, y, maxRadius, color);
             }
         }
 
-        setInterval(drawBackground, 1000);
+        setInterval(drawStarryNight, 1000);
     </script>
 </body>
 
